@@ -13,4 +13,31 @@ router.get('/', (req, res) =>{
 })
 
 
+router.get('/create', (req, res) =>{
+    res.render('auth-create')
+})
+
+router.post('/create', async (req, res) => {
+
+    const { username, password } = req.body
+
+    await User.findOne({username}).then( async (isUser)=>{
+        
+        if(isUser){
+
+            res.send('USER already exist !')
+
+        }else if (!isUser){
+            // pour l'instant le MDP n'est pas hashé
+           const createdUser = await User.create({username, password}).then( (newUser) => {
+               console.log(newUser, "a été créé"),
+                req.session.user = newUser;
+
+               res.redirect('../routes/index.js')
+           })
+        }
+    })
+})
+
+
 module.exports = router
