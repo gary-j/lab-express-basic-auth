@@ -52,8 +52,11 @@ router.post('/', (req, res, next)=>{
                     errorMessage: 'Wrong Credentials, please check your Username or password'
                 })
             }
-            req.session.user = user 
-            return res.redirect(attemptedUrl ||'/')
+            req.session.user = user;
+            let sessionUser = req.session.user
+            console.log(req.session.user, 'LA SESSION');
+            // return res.redirect(attemptedUrl ||'/')
+            res.render('index', sessionUser)
         })
     })
     .catch((err) => {
